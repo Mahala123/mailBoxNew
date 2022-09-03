@@ -1,0 +1,11 @@
+.Body {
+    margin: 3rem auto;
+    width: 40%;
+    max-width: 12rem;
+    border-radius: 6px;
+    background-color: rgb(13, 211, 229);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 20%);
+    padding: 6rem;
+    text-align: center;
+}
+
