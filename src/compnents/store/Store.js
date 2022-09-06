@@ -9,13 +9,15 @@ const authslice=createSlice({
         logedIn(state){
   
             state.logeIn=!state.logeIn;
+            
         },
         tokenId(state,action){
             state.idToken=action.payload;
         },
         logOut(state){
              state.idToken=null;   
-        }
+        },
+      
     }
   })
   const store=configureStore({

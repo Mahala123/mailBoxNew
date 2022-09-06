@@ -1,0 +1,7 @@
+.mailbox{
+    box-sizing: border-box;
+    width: 70vw;
+    height: 60vh;
+    margin-left: 200px;
+    border: 2px solid black;
+}
