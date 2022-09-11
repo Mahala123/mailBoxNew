@@ -64,6 +64,7 @@ function Signup() {
     }).then(data=>{
       console.log(data)
       dispatch(authSliceCreate.tokenId(data.idToken))
+      dispatch(authSliceCreate.setEmail(data.email))
       history.replace('/welcome')
     }).catch(err=>{
       alert(err.message)

@@ -2,23 +2,32 @@ import React, { useState } from 'react'
 import './CreateEmail.css'
 import './WellcomePage.css'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState } from "draft-js";
+import { EditorState,convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 //import { useSelector } from 'react-redux';
 import {useRef} from 'react'
 import { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 
 function CreateMail() {
     const toEmail=useRef()
     const testMail=useRef()
+    const email=useSelector(state=>state.auth.email)
     const[editor,setEditor]=useState(EditorState.createEmpty())
+    const onSetEditor=(ed)=>
+    {
+       setEditor(ed)
+    }
     
     const sendMailHandler=()=>
     {
      const storeEmail=
      {
+      from:{email},
       to:toEmail.current.value,
-      description:testMail.current.value
+      description:testMail.current.value,
+      isRead:false,
+      body: convertToRaw(editor.getCurrentContent()),
      }
      fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/sentMail.json`,
       {
@@ -32,6 +41,9 @@ function CreateMail() {
       .then((data) => {
          console.log(data);
       });
+      toEmail.current.value = "";
+      testMail.current.value = "";
+    setEditor(EditorState.createEmpty());
     }
     
   return (
@@ -44,7 +56,7 @@ function CreateMail() {
           toolbarClassName="toolbarClassName"
           wrapperClassName="wrapperClassName"
           editorClassName="editorClassName"
-          onEditorStateChange={setEditor}
+          onEditorStateChange={onSetEditor}
         /> 
     </div>
     <div>
