@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './CreateEmail.css'
 import './WellcomePage.css'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState,convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 //import { useSelector } from 'react-redux';
 import {useRef} from 'react'
@@ -12,7 +12,8 @@ import { useSelector } from 'react-redux';
 function CreateMail() {
     const toEmail=useRef()
     const testMail=useRef()
-    const email=useSelector(state=>state.auth.email)
+    const userEmail=useSelector(state=>state.auth.email)
+    const idemail=useSelector(state=>state.auth.emailid)
     const[editor,setEditor]=useState(EditorState.createEmpty())
     const onSetEditor=(ed)=>
     {
@@ -23,24 +24,35 @@ function CreateMail() {
     {
      const storeEmail=
      {
-      from:{email},
+      from:userEmail,
       to:toEmail.current.value,
       description:testMail.current.value,
       isRead:false,
-      body: convertToRaw(editor.getCurrentContent()),
      }
-     fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/sentMail.json`,
-      {
-      method: "POST",
+     //const cleanToEmail = toEmail.current.value.replace(/[^a-zA-Z ]/g, "");
+  fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`,{
+      method: 'POST',
       headers: {
         "Content-type": "application-json",
       },
       body: JSON.stringify(storeEmail),
     })
-      .then((res) => res.json())
-      .then((data) => {
-         console.log(data);
-      });
+    .then((res=>res.json()))
+    .then((data)=> {
+      // console.log(data);
+    })
+    //  fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`,
+    //   {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-type": "application-json",
+    //   },
+    //   body: JSON.stringify(storeEmail),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //      console.log(data);
+    //   });
       toEmail.current.value = "";
       testMail.current.value = "";
     setEditor(EditorState.createEmpty());

@@ -7,24 +7,26 @@ import { useState } from "react";
 import { useEffect } from "react";
 function Inbox(props) {
   const emails = useSelector((state) => state.mail.inbox);
+  const idemail=useSelector(state=>state.auth.emailid)
   const dispatch = useDispatch();
   //console.log(emails);
   const [mail,setMail] = useState("");
   if (emails) {
-    props.setUnread(
-      Object.keys(emails).reduce((p, key) => {
-        if (!emails[key].isRead) return p + 1;
-        return p;
-      }, 0)
-    );
+    props.setUnread(Object.keys(emails).reduce((p,key)=>{
+      if(!emails[key].isRead) return p+1;
+      return p;
+    },0))
   }
+  
+  
   useEffect(() => {
-    fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/inbox.json`)
+    fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((data) => { 
         dispatch(mailActions.setInbox(data));
+        //console.log(data)
       });
-  }, [dispatch]);
+  }, [idemail,dispatch]);
   const openEmail = (event) => {
     setMail({
       email: emails[event.currentTarget.id],
@@ -36,19 +38,13 @@ function Inbox(props) {
         {Object.keys(emails)
           .reverse()
           .map((item) => (
-            <li id={item} onClick={openEmail} key={item}>
-              {/* {!emails[item].isRead && (
-                <div
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    backgroundColor: "red",
-                  }}
-                />
-              )} */}
-              <span>{emails[item].from}:</span>
-              <span>{emails[item].description}</span>
+            <li id={item} onClick={openEmail} key={item}
+             style={{
+            backgroundColor: emails[item].isRead ?'white':'',
+          }}>
+            {!emails[item].isRead && <div style={{width: '10px', height:'10px', borderRadius: '50%', backgroundColor: 'green'}}/>}
+              <span>FROM:{emails[item].from}</span>
+             
             </li>
           ))}
       </ul>
@@ -57,7 +53,7 @@ function Inbox(props) {
     );
   
 
-  const mailCloseHandler = (data) => {
+  const mailDeleteHandler = (data) => {
     dispatch(mailActions.setInbox(data));
     setMail("");
   };
@@ -66,7 +62,9 @@ function Inbox(props) {
     <div>
       <h1>INBOX</h1>
       {!mail && emailList}
-      {mail && <InboxMail onClose={mailCloseHandler} data={mail} />}
+      {mail && <InboxMail 
+      onDelete={mailDeleteHandler}
+      data={mail} />}
     </div>
   );
 }
