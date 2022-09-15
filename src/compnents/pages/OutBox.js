@@ -6,17 +6,17 @@ const OutBox = () => {
   const dispatch = useDispatch();
   const [outSingleMail, setSingleMail] = useState("");
   const emails = useSelector((state) => state.mail.outbox);
- // const cleanUserEmail = useSelector((state) => state.auth.cleanEmail);
+  const id1 = useSelector((state) => state.auth.emailid);
 
   useEffect(() => {
     fetch(
-      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/sentemails.json`
+      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${id1}/sentMail.json`
     )
       .then((res) => res.json())
       .then((data) => {
         dispatch(mailActions.setOutbox(data));
       });
-  }, [ dispatch]);
+  }, [id1, dispatch]);
 
   const openEmailClickHandler = (event) => {
     setSingleMail({
@@ -34,9 +34,8 @@ const OutBox = () => {
           key={item}
         >
           <span >
-            {emails[item].to}:
+           TO: {emails[item].to}
           </span>
-          <span>{emails[item].description}</span>
         </li>
       ))}
     </ul>
@@ -44,9 +43,9 @@ const OutBox = () => {
     <p>No Emails Found</p>
   );
 
-  const onSingleMailCloseHandler = () => {
-    setSingleMail("");
-  };
+  // const onSingleMailCloseHandler = () => {
+  //   setSingleMail("");
+  // };
 
   const onSingleMailDeleteHandler = (data) => {
     dispatch(mailActions.setOutbox(data));
@@ -55,11 +54,10 @@ const OutBox = () => {
 
   return (
     <Fragment>
-      <h4>This is outbox</h4>
+      <h1>OUTBOX</h1>
       {!outSingleMail && emailListJSX}
       {outSingleMail && <OutBoxMail
         onDelete={onSingleMailDeleteHandler}
-        onClose={onSingleMailCloseHandler}
         data={outSingleMail}
       /> } 
     </Fragment>

@@ -11,12 +11,12 @@ function Inbox(props) {
   const dispatch = useDispatch();
   //console.log(emails);
   const [mail,setMail] = useState("");
-  if (emails) {
-    props.setUnread(Object.keys(emails).reduce((p,key)=>{
-      if(!emails[key].isRead) return p+1;
-      return p;
-    },0))
-  }
+  // if (emails) {
+  //   props.setUnread(Object.keys(emails).reduce((p,key)=>{
+  //     if(!emails[key].isRead) return p+1;
+  //     return p;
+  //   },0))
+  // }
   
   
   useEffect(() => {
@@ -39,7 +39,7 @@ function Inbox(props) {
           .reverse()
           .map((item) => (
             <li id={item} onClick={openEmail} key={item}
-             style={{
+              style={{
             backgroundColor: emails[item].isRead ?'white':'',
           }}>
             {!emails[item].isRead && <div style={{width: '10px', height:'10px', borderRadius: '50%', backgroundColor: 'green'}}/>}
@@ -51,7 +51,7 @@ function Inbox(props) {
     ):(
       <p>No Emails Found</p>
     );
-  
+    
 
   const mailDeleteHandler = (data) => {
     dispatch(mailActions.setInbox(data));

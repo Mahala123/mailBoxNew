@@ -1,41 +1,40 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import {useSelector, useDispatch, } from "react-redux";
 import { mailActions } from "../store/Store";
-
-//import classes from './SingleMail.module.css';
-
-const InboxMail = (props) => {
+import {useEffect } from "react";
+  const InboxMail = (props) => {
   const dispatch = useDispatch();
- // const cleanUserEmail = useSelector((state) => state.auth.cleanEmail);
+  const idemail=useSelector(state=>state.auth.emailid)
   const endpoint = props.data.ID;
   useEffect(() => {
     fetch(
-      `https://projectdemo-cb4b5-default-rtdb.firebaseio.com/inbox/${endpoint}.json`,
+      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail/${endpoint}/.json`,
       {
         method: "PATCH",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          isRead: true,
+          isRead:false,
         }),
       }
     ).then((res) => {
       if (res.ok) {
         fetch(
-          `https://projectdemo-cb4b5-default-rtdb.firebaseio.com/inbox.json`
+          `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`
         )
           .then((res) => res.json())
-          .then((data) => {
+          .then((data) =>
+          {
             dispatch(mailActions.setInbox(data));
           });
       }
     });
-  }, [endpoint, dispatch]);
+  }, [idemail,endpoint,dispatch]);
 
   const deleteClickHandler = () => {
     fetch(
-      `https://mail-box-73bc7-default-rtdb.firebaseio.com/inbox/${endpoint}.json`,
+      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox/${endpoint}.json`,
       {
         method: "DELETE",
         headers: {
@@ -45,7 +44,7 @@ const InboxMail = (props) => {
     ).then((res) => {
       if (res.ok) {
         fetch(
-          `https://mail-box-73bc7-default-rtdb.firebaseio.com/inbox.json`
+          `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox.json`
         )
           .then((res) => res.json())
           .then((data) => {
@@ -57,10 +56,8 @@ const InboxMail = (props) => {
 
   return (
     <div >
-      <button onClick={props.onClose}>Close</button>
-      <h3>{props.data.email.from}</h3>
-      <h3>{props.data.email.description}</h3>
-      <div dangerouslySetInnerHTML={{ __html: props.data.email.body }} />
+      <h3>FROM:{props.data.email.from}</h3>
+      <h3>DESCRIPTION:{props.data.email.description}</h3>
       <button onClick={deleteClickHandler}>Delete This Email!</button>
     </div>
   );
