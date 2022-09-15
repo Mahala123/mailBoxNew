@@ -11,16 +11,16 @@ function Inbox(props) {
   const dispatch = useDispatch();
   //console.log(emails);
   const [mail,setMail] = useState("");
-  // if (emails) {
-  //   props.setUnread(Object.keys(emails).reduce((p,key)=>{
-  //     if(!emails[key].isRead) return p+1;
-  //     return p;
-  //   },0))
-  // }
+  if (emails) {
+    props.setUnread(Object.keys(emails).reduce((p,key)=>{
+      if(!emails[key].isRead) return p+1;
+      return p;
+    },0))
+  }
   
   
   useEffect(() => {
-    fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`)
+    fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox.json`)
       .then((res) => res.json())
       .then((data) => { 
         dispatch(mailActions.setInbox(data));
@@ -42,6 +42,7 @@ function Inbox(props) {
               style={{
             backgroundColor: emails[item].isRead ?'white':'',
           }}>
+         
             {!emails[item].isRead && <div style={{width: '10px', height:'10px', borderRadius: '50%', backgroundColor: 'green'}}/>}
               <span>FROM:{emails[item].from}</span>
              
@@ -52,6 +53,10 @@ function Inbox(props) {
       <p>No Emails Found</p>
     );
     
+    
+  const mailCloseHandler = () => {
+    setMail("");
+  };
 
   const mailDeleteHandler = (data) => {
     dispatch(mailActions.setInbox(data));
@@ -63,8 +68,10 @@ function Inbox(props) {
       <h1>INBOX</h1>
       {!mail && emailList}
       {mail && <InboxMail 
+      onClose={mailCloseHandler}
       onDelete={mailDeleteHandler}
       data={mail} />}
+      
     </div>
   );
 }

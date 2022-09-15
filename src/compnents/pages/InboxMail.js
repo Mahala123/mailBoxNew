@@ -8,20 +8,20 @@ import {useEffect } from "react";
   const endpoint = props.data.ID;
   useEffect(() => {
     fetch(
-      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail/${endpoint}/.json`,
+      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox/${endpoint}/.json`,
       {
         method: "PATCH",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          isRead:false,
+          isRead: true,
         }),
       }
     ).then((res) => {
       if (res.ok) {
         fetch(
-          `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`
+          `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox.json`
         )
           .then((res) => res.json())
           .then((data) =>
@@ -34,7 +34,7 @@ import {useEffect } from "react";
 
   const deleteClickHandler = () => {
     fetch(
-      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox/${endpoint}.json`,
+      `https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox/${endpoint}/.json`,
       {
         method: "DELETE",
         headers: {
@@ -58,7 +58,8 @@ import {useEffect } from "react";
     <div >
       <h3>FROM:{props.data.email.from}</h3>
       <h3>DESCRIPTION:{props.data.email.description}</h3>
-      <button onClick={deleteClickHandler}>Delete This Email!</button>
+      <button onClick={deleteClickHandler}>DELETE</button><br/>
+      <button onClick={props.onClose}>CLOSE</button>
     </div>
   );
 };
