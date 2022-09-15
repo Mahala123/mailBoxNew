@@ -63,7 +63,7 @@ function Signup() {
       }
     }).then(data=>{
       console.log(data)
-      dispatch(authSliceCreate.tokenId(data.idToken))
+      dispatch(authSliceCreate.logedIn(data.idToken))
       dispatch(authSliceCreate.setEmail(data.email))
       history.replace('/welcome')
     }).catch(err=>{
@@ -76,7 +76,6 @@ function Signup() {
       <form onSubmit={submitHandler}>
         <input type="email" placeholder="Email" ref={email} required />
         <br />
-
         <input type="password" placeholder="Password" ref={password} required />
         <br />
 

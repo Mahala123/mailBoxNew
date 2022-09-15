@@ -13,7 +13,7 @@ function WellcomePage() {
   const[mail,setMail]=useState(false)
   const[inboxOpen,setInboxOpen]=useState(false)
   const[outBox,setOutBox]=useState(false)
- const[unMess,setUnMess]=useState(0)
+ //const[unMess,setUnMess]=useState(0)
   
   const createMailHandler=()=>
   {
@@ -36,20 +36,20 @@ function WellcomePage() {
   {
     dispatch(authSliceCreate.logOut())
   }
-  const setUnreadHandler = (data) => {
-    setUnMess(data);  
-  }
+  // const setUnreadHandler = (data) => {
+  //   setUnMess(data);  
+  // }
   return (
     <div>
     <button onClick={logOutHandler}>LOG OUT</button>
       <h2>WELLCOME TO MAIL BOX</h2>
-      {unMess ? <span>MESSAGE: {unMess}</span> : ''}<br/>
+      {/* {unMess ? <span>MESSAGE: {unMess}</span> : ''}<br/> */}
       <button onClick={createMailHandler}>Create Email</button>
       <button onClick={openInBox}>Inbox</button>
       <button onClick={openOutBox}>OutBox</button>
       <div>
         {mail &&<CreateMail/>}
-        {inboxOpen && <Inbox setUnread={setUnreadHandler} />}
+        {inboxOpen && <Inbox/>}
         {outBox&&<OutBox/>}
       </div>
       </div>)

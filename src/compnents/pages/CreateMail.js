@@ -29,30 +29,30 @@ function CreateMail() {
       description:testMail.current.value,
       isRead:false,
      }
-     //const cleanToEmail = toEmail.current.value.replace(/[^a-zA-Z ]/g, "");
-  fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`,{
-      method: 'POST',
+   // const cleanToEmail = toEmail.current.value.replace(/[^a-zA-Z ]/g, "");
+  // fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${cleanToEmail}/inbox.json`,{
+  //     method: 'POST',
+  //     headers: {
+  //       "Content-type": "application-json",
+  //     },
+  //     body: JSON.stringify(storeEmail),
+  //   })
+  //   .then((res=>res.json()))
+  //   .then((data)=> {
+  //     // console.log(data);
+  //   })
+     fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`,
+      {
+      method: "POST",
       headers: {
         "Content-type": "application-json",
       },
       body: JSON.stringify(storeEmail),
     })
-    .then((res=>res.json()))
-    .then((data)=> {
-      // console.log(data);
-    })
-    //  fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/sentMail.json`,
-    //   {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-type": "application-json",
-    //   },
-    //   body: JSON.stringify(storeEmail),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //      console.log(data);
-    //   });
+      .then((res) => res.json())
+      .then((data) => {
+         console.log(data);
+      });
       toEmail.current.value = "";
       testMail.current.value = "";
     setEditor(EditorState.createEmpty());

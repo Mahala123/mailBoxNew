@@ -1,34 +1,34 @@
 import {createSlice,configureStore} from '@reduxjs/toolkit'
 const authslice=createSlice({
-
-
     name:'auth',
-    initialState: {logeIn:false,idToken:null,email:null},
+    initialState: {logeIn:false,idToken:"",email:"",emailid:""},
     reducers:{
   
-        logedIn(state){
+        logedIn(state,action){
   
-            state.logeIn=!state.logeIn;    
+            state.logeIn=!state.logeIn; 
+            state.idToken=action.payload;   
         },
         setEmail(state, action) {
           state.email = action.payload;
         },
-            
-        tokenId(state,action){
-            state.idToken=action.payload;
-        },
         logOut(state){
-             state.idToken=null;   
+             state.logeIn=false;
+             state.idToken="";  
+             state.emailid=""; 
+             state.email="";
         },
-      
+        setEmailId(state,action)
+        {
+          state.emailid=action.payload
+        }
     }
   })
  
 const initialMailState = {
-    inbox:{},
-    outbox:{},
+    inbox:[],
+    outbox:[],
   };
-  
   const mailSlice = createSlice({
     name: "mail",
     initialState: initialMailState,
@@ -47,5 +47,4 @@ const initialMailState = {
   
 export const mailActions = mailSlice.actions;
 export const authSliceCreate=authslice.actions;
-
 export default store;
