@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import './CreateEmail.css'
 import './WellcomePage.css'
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState } from "draft-js";
+import { EditorState,convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 //import { useSelector } from 'react-redux';
 import {useRef} from 'react'
 import { Fragment } from 'react';
+import draftToHtml from "draftjs-to-html";
 import { useSelector } from 'react-redux';
+
 
 function CreateMail() {
     const toEmail=useRef()
@@ -27,6 +29,7 @@ function CreateMail() {
       from:userEmail,
       to:toEmail.current.value,
       description:testMail.current.value,
+      value:draftToHtml(convertToRaw(editor.getCurrentContent())),
       isRead:false,
      }
   fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox.json`,{
