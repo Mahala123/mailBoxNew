@@ -13,7 +13,7 @@ function WellcomePage() {
   const[mail,setMail]=useState(false)
   const[inboxOpen,setInboxOpen]=useState(false)
   const[outBox,setOutBox]=useState(false)
-  const[unMess,setUnMess]=useState(0)
+  const[unMess,setUnMess]=useState()
   
   const createMailHandler=()=>
   {
@@ -46,7 +46,7 @@ function WellcomePage() {
       {unMess ? <span>MESSAGE: {unMess}</span> : ''}<br/>
       <button onClick={createMailHandler}>Create Email</button>
       <button onClick={openInBox}>Inbox</button>
-      <button onClick={openOutBox}>OutBox</button>
+      <button onClick={openOutBox}>SentBox</button>
       <div>
         {mail &&<CreateMail/>}
         {inboxOpen && <Inbox setUnread={setUnreadHandler}/>}
