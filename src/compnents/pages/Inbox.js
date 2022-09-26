@@ -17,8 +17,6 @@ function Inbox(props) {
       return p;
     },0))
   }
-  
-  
   useEffect(() => {
     fetch(`https://mailboxnew-311a6-default-rtdb.firebaseio.com/${idemail}/inbox.json`)
       .then((res) => res.json())
@@ -27,6 +25,7 @@ function Inbox(props) {
         //console.log(data)
       });
   }, [idemail,dispatch]);
+
   const openEmail = (event) => {
     setMail({
       email: emails[event.currentTarget.id],
